@@ -20,7 +20,12 @@ def send_mail(to, receiver, msg):
     """
     message = MIMEText(msg, 'plain', 'utf-8')
     message['From'] = _format_addr(MY_NAME + ' <%s>' % MAIL_USERNAME)
-    message['To'] = _format_addr(to + ' <%s>' % receiver)
+    # 群发则不解析收件人地址
+    if isinstance(receiver, list) and len(receiver) > 1:
+        message['To'] = Header(to, 'utf-8')
+    else:
+        receiver = receiver[0] if isinstance(receiver, list) else receiver
+        message['To'] = _format_addr(to + ' <%s>' % receiver)
     message['Subject'] = Header(MAIL_SUBJECT_PREFIX + get_diff_time(START_DATE, START_DATE_MSG), 'utf-8')
 
     try:

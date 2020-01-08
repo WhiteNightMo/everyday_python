@@ -32,6 +32,12 @@ def get_diff_time(start_date, start_msg=''):
 
 
 def init_logger():
+    """
+    初始化日志模块
+    :return:
+    """
+
+    # 路径+文件名
     path = r"./logs/"
     if not os.path.exists(path):
         os.makedirs(path)
@@ -40,7 +46,7 @@ def init_logger():
     logger = logging.getLogger('log')
     logger.setLevel(logging.DEBUG)
 
-    # 调用模块时,如果错误引用，比如多次调用，每次会添加Handler，造成重复日志，这边每次都移除掉所有的handler，后面在重新添加，可以解决这类问题
+    # 调用模块时, 如果错误引用，比如多次调用，每次会添加Handler，造成重复日志，这边每次都移除掉所有的handler，后面在重新添加，可以解决这类问题
     while logger.hasHandlers():
         for i in logger.handlers:
             logger.removeHandler(i)
