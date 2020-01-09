@@ -1,6 +1,8 @@
 """
     Created by xukai on 2019/12/24
 """
+from datetime import datetime
+
 from config import *
 from utils.email import send_mail
 from utils.helper import get_diff_time, init_logger
@@ -13,7 +15,7 @@ if __name__ == '__main__':
     # 获取一句彩虹屁
     words = get_one_words(WORDS_CHANNEL)
     # 获取天气信息
-    weather = get_weather_info(CITY_NAME)
+    weather = get_weather_info(CITY_NAME, is_tomorrow=datetime.now().hour >= 20)
     # 天数
     diff_time = get_diff_time(START_DATE, START_DATE_MSG)
     # 爱称

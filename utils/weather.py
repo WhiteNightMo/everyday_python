@@ -12,10 +12,11 @@ with open(os.path.join(os.path.dirname(__file__), '_city_sojson.json'), 'r', enc
 MSG_TODAY = '{_date},{week} {city_name}\n【今日天气】{_type}\n【今日气温】{low_temp} {high_temp}\n【今日风速】{speed}\n【出行提醒】{notice}'
 
 
-def get_sojson_weather(city_name):
+def get_sojson_weather(city_name, is_tomorrow=False):
     """
      获取天气信息。网址：https://www.sojson.com/blog/305.html .
     :param city_name: str,城市名
+    :param is_tomorrow: 是否获取明日天气
     :return: str ,例如：2019-06-12 星期三 晴 南风 3-4级 高温 22.0℃ 低温 18.0℃ 愿你拥有比阳光明媚的心情
     """
     if not city_name:
@@ -47,16 +48,16 @@ def get_sojson_weather(city_name):
             # "notice": "阴晴之间，谨防紫外线侵扰"
             # }
             if weather_dict.get('status') == 200:
-
                 today_weather = weather_dict.get('data').get('forecast')[0]
-
                 today_date = datetime.now().strftime('%Y-%m-%d')
                 # 这个天气的接口更新不及时，有时候当天1点的时候，还是昨天的天气信息，如果天气不一致，则取下一天(今天)的数据
                 weather_today = today_weather['ymd']
-                if today_date != weather_today:
+                if is_tomorrow is True or today_date != weather_today:
                     today_weather = weather_dict.get('data').get('forecast')[1]
 
-                weather_info = MSG_TODAY.format(
+                # 拼接天气信息
+                weather_msg = MSG_TODAY.replace('今日', '明日') if is_tomorrow is True else MSG_TODAY
+                weather_info = weather_msg.format(
                     city_name=city_name,
                     _date=today_weather['ymd'],
                     week=today_weather['week'],
@@ -75,15 +76,16 @@ def get_sojson_weather(city_name):
         return None
 
 
-def get_weather_info(city_name):
+def get_weather_info(city_name, is_tomorrow=False):
     """
     获取天气
-    :param city_name:str,城市名称
-    :return: str,天气情况
+    :param city_name: 城市名称
+    :param is_tomorrow: 是否获取明日天气
+    :return: 天气情况
     """
     if not city_name:
         return
-    return get_sojson_weather(city_name)
+    return get_sojson_weather(city_name, is_tomorrow)
 
 
 if __name__ == '__main__':
