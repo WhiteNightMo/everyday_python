@@ -1,6 +1,7 @@
 """
     Created by xukai on 2019/12/24
 """
+import json
 import logging
 import os
 import re
@@ -65,3 +66,16 @@ def init_logger():
     ch.setFormatter(formatter)
     logger.addHandler(ch)
     return logger
+
+
+def is_json(resp):
+    """
+    判断数据是否能被 Json 化。 True 能，False 否。
+    :param resp: request.
+    :return: bool, True 数据可 Json 化；False 不能 JSON 化。
+    """
+    try:
+        json.loads(resp.text)
+        return True
+    except AttributeError as error:
+        return False
