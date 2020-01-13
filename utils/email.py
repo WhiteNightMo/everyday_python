@@ -39,8 +39,8 @@ def send_mail(to, receiver, msg):
         print(e)
 
 
-# 自定义处理邮件收发地址的显示内容
 def _format_addr(s):
+    """自定义处理邮件收发地址的显示内容"""
     name, addr = parseaddr(s)
     print(name)
     print(addr)
