@@ -25,5 +25,5 @@ if __name__ == '__main__':
     # 合并消息
     send_msg = '\n'.join(x for x in [words, weather, diff_time, pet_name] if x)
     # 发送邮件
-    # send_mail(to=YOUR_NAME, receiver=MAIL_RECEIVERS, msg=send_msg)
+    send_mail(to=YOUR_NAME, receiver=MAIL_RECEIVERS, msg=send_msg)
     logger.info('\n------------------\n' + send_msg + '\n')
